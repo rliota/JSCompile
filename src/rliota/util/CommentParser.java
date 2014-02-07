@@ -1,4 +1,4 @@
-package net.rliota.util.javascript;
+package rliota.util;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -28,7 +28,7 @@ public class CommentParser {
 
     public CommentParser(StringBuilder jsString){
         this.jsString = jsString;
-        this.extractComments();
+        delegateTraversal();
     }
 
     public ArrayList<String> getComments(){
@@ -44,35 +44,32 @@ public class CommentParser {
         splats = 0;
     }
 
-    private void delegateTraversal(char current){
-        if(current == SLASH){
-            slashes++;
-            if(slashes == 2){
-                currentIndex -= 2;
-                traverseLineComment();
-                resetState();
-            }
-        }else if(current == SPLAT){
-            splats++;
-            if(splats == 1 && slashes ==1){
-                currentIndex -= 2;
-                traverseBlockComment();
-            }
-            resetState();
-        }else{
-            resetState();
-            if(current == APOSTROPHE){
-                traverseCharArray();
-            }else if(current == QUOTE){
-                traverseString();
-            }
-        }
-        extractComments();
-    }
-
-    private void extractComments(){
+    private void delegateTraversal(){
+        char current;
         while(currentIndex<jsString.length()){
-            delegateTraversal(jsString.charAt(currentIndex++));
+            current = jsString.charAt(currentIndex++);
+            if(current == SLASH){
+                slashes++;
+                if(slashes == 2){
+                    currentIndex -= 2;
+                    traverseLineComment();
+                    resetState();
+                }
+            }else if(current == SPLAT){
+                splats++;
+                if(splats == 1 && slashes ==1){
+                    currentIndex -= 2;
+                    traverseBlockComment();
+                    resetState();
+                }
+            }else{
+                resetState();
+                if(current == APOSTROPHE){
+                    traverseCharArray();
+                }else if(current == QUOTE){
+                    traverseString();
+                }
+            }
         }
     }
 
@@ -88,7 +85,7 @@ public class CommentParser {
                 precedingEscape = true;
             }
         }
-        extractComments();
+        delegateTraversal();
     }
 
     private void traverseCharArray(){
@@ -103,7 +100,7 @@ public class CommentParser {
                 precedingEscape = true;
             }
         }
-        extractComments();
+        delegateTraversal();
     }
 
     private void traverseLineComment(){
@@ -121,7 +118,7 @@ public class CommentParser {
         comments.add(comment);
         jsString.replace(commentStart, currentIndex, "");
         currentIndex = commentStart;
-        extractComments();
+        delegateTraversal();
     }
 
     private void traverseBlockComment() {
@@ -130,19 +127,18 @@ public class CommentParser {
         boolean precedingSplat = false;
         char next;
         while(currentIndex < jsString.length()){
-            next = jsString.charAt(currentIndex);
+            next = jsString.charAt(currentIndex++);
             comment += next;
             if(next == SLASH && precedingSplat){
                 break;
             }
             precedingSplat = (next == SPLAT);
-            currentIndex++;
         }
         resetState();
         comments.add(comment);
-        jsString.replace(commentStart, currentIndex+1, "");
+        jsString.replace(commentStart, currentIndex, "");
         currentIndex = commentStart;
-        extractComments();
+        delegateTraversal();
     }
 
     public ArrayList<String> getImports(){

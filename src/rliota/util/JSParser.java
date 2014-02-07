@@ -1,7 +1,5 @@
-package net.rliota.util;
+package rliota.util;
 
-
-import net.rliota.util.javascript.CommentParser;
 
 import java.io.*;
 import java.util.*;
@@ -10,6 +8,7 @@ public class JSParser {
 
     private static final char NEW_LINE = '\n';
     private static final String REGEX_DOT = "\\.";
+    private static final String SEPARATOR = File.separator;
 
     private FileWriter outputFile = null;
     private HashMap<String, File> namespaceResourceMap = new HashMap<String, File>();
@@ -27,9 +26,18 @@ public class JSParser {
             }
             this.outputFile = new FileWriter(destinationPath);
             String namespace = rootDir.getName().trim().toUpperCase();
-            this.outputFile.write(NEW_LINE + namespace + " = {};");
+
+            String[] pathStr = destinationPath.split(SEPARATOR);
+            String functionName = pathStr[pathStr.length-1];
+            functionName = functionName.split("[.]")[0];
+            String uncapitalizedName = functionName.substring(1);
+            String capitalStart = functionName.substring(0,1).toUpperCase();
+            functionName = capitalStart + uncapitalizedName;
+            String header = "//Generated on " + new Date() + "\nfunction initialize" + functionName + "(){";
+            this.outputFile.write(header + NEW_LINE + "window." + namespace + " = {};");
             this.processDirectory(rootDir, namespace);
             this.assembleJSFiles();
+            this.outputFile.write("}");
             this.outputFile.close();
         }else{
             System.out.println("Source path \"" + rootPath + "\" is not a directory.");
