@@ -79,11 +79,9 @@ public class CommentParser {
         while(currentIndex<jsString.length()){
             next = jsString.charAt(currentIndex++);
             if(next == QUOTE && !precedingEscape){
-                break;
+                break; //keep going. If I were implementing a full featured JS parser, I'd store this string.
             }
-            if(next == ESCAPE){
-                precedingEscape = true;
-            }
+            precedingEscape = (next == ESCAPE);
         }
         delegateTraversal();
     }
@@ -96,9 +94,7 @@ public class CommentParser {
             if(next == APOSTROPHE && !precedingEscape){
                 break;
             }
-            if(next == ESCAPE){
-                precedingEscape = true;
-            }
+            precedingEscape = (next == ESCAPE);
         }
         delegateTraversal();
     }

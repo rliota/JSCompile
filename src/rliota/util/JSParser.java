@@ -30,10 +30,7 @@ public class JSParser {
             String[] pathStr = destinationPath.split(SEPARATOR);
             String functionName = pathStr[pathStr.length-1];
             functionName = functionName.split("[.]")[0];
-            String uncapitalizedName = functionName.substring(1);
-            String capitalStart = functionName.substring(0,1).toUpperCase();
-            functionName = capitalStart + uncapitalizedName;
-            String header = "//Generated on " + new Date() + "\nfunction initialize" + functionName + "(){";
+            String header = "//Generated on " + new Date() + "\nfunction initialize_" + functionName + "(){";
             this.outputFile.write(header + NEW_LINE + "window." + namespace + " = {};");
             this.processDirectory(rootDir, namespace);
             this.assembleJSFiles();
