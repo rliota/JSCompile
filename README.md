@@ -12,7 +12,7 @@ Given a directory map for a project of
 <br/>&nbsp;|---- template
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---- EvaluationTemplates.js
 
-JSCompile will output initialization for namespace objects:
+JSCompile will output an initialization function, defining namespace objects derived from the path structure of your project:
 <pre><code>var TFA = {};
 var TFA.model = {};
 var TFA.view = {};
