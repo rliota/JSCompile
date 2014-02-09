@@ -1,7 +1,10 @@
 JSCompile
 =========
 
-JSCompile is a tool for packaging disparate JavaScript files into one consolidated page. It allows you to define resource requirements inside comments with the @import annotation, enabling you to organize the build process declarative dependencies. Additionally, it provides namespace object instantiation in the process of pulling together all of your javascript files together (to match the directories the compiler has traversed.)
+JSCompile is a tool for packaging disparate JavaScript files into one consolidated initialization function.
+It allows you to define resource requirements inside comments with the @import annotation, enabling you to organize the
+build process declarative dependencies. Additionally, it provides namespace object instantiation in the process of
+pulling together all of your javascript files (to match the directories the compiler has traversed.)
 
 Given a directory map for a project of
 <br/>tfa
@@ -12,12 +15,14 @@ Given a directory map for a project of
 <br/>&nbsp;|---- template
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---- EvaluationTemplates.js
 
-JSCompile will output an initialization function, defining namespace objects derived from the path structure of your project:
-<pre><code>var TFA = {};
+JSCompile will output an initialization function, defining namespace objects derived from the path structure of your
+project like so:
+<pre><code>function initialize_MyCompiledJSResources(){
+var TFA = {};
 var TFA.model = {};
 var TFA.view = {};
 var TFA.template = {};
-</code></pre>
+}</code></pre>
 
 Which would enable you to declare objects under namespaces (under the assumption that they would exist at runtime):
 <pre><code>//**
