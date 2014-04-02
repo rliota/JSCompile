@@ -60,8 +60,13 @@ public class JSParser {
                         this.outputFile.write(NEW_LINE + namespace + " = {};");
                         processDirectory(child, namespace);
                     }else if(child.isFile() && !shouldIgnore(child)){
-                        String namespace = parentNamespace + "." + child.getName().split(REGEX_DOT)[0];
-                        this.namespaceResourceMap.put(namespace, child);
+                        String[] childName = child.getName().split(REGEX_DOT);
+                        if(childName.length>1){
+                            if(childName[1].equals("js")){
+                                String namespace = parentNamespace + "." + childName[0];
+                                this.namespaceResourceMap.put(namespace, child);
+                            }
+                        }
                     }
                 }
             }
