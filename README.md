@@ -7,7 +7,7 @@ build process declarative dependencies. Additionally, it provides namespace obje
 pulling together all of your javascript files (to match the directories the compiler has traversed.)
 
 Given a directory map for a project of
-<br/>tfa
+<br/>TFA
 <br/>&nbsp;|---- model
 <br/>&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---- Evaluation.js
 <br/>&nbsp;|---- view
