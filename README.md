@@ -46,5 +46,4 @@ Argument 1: Destination filename - the file in which the compiled resources will
 Caveats
 =======
 Some major limitations of this compiler:
-* For syntactic clarity, the root source directory is capitalized (tfa => TFA) when creating the directory configured namespaces
 * @import annotations actually refer to the filepaths of the resource - JSCompile is not "smart" enough to figure out what objects/functions you have declared and where they reside. (tfa/model/Evaluation.js could contain a definition for VNSNY.model.Clinician = ... and it would import the file regardless, without setting up the namespace VNSNY.model.)
