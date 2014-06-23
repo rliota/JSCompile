@@ -8,7 +8,7 @@ public class JSParser {
 
     private static final char NEW_LINE = '\n';
     private static final String REGEX_DOT = "\\.";
-    private static final String SEPARATOR = File.separator;
+    private static final String SEPARATOR = "[\\/]";
 
     private FileWriter outputFile = null;
     private HashMap<String, File> namespaceResourceMap = new HashMap<String, File>();
