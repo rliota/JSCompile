@@ -25,7 +25,7 @@ public class JSParser {
                 this.pathsToIgnore = pathsToIgnore;
             }
             this.outputFile = new FileWriter(destinationPath);
-            String namespace = rootDir.getName().trim().toUpperCase();
+            String namespace = rootDir.getName().trim();
 
             String[] pathStr = destinationPath.split(SEPARATOR);
             String functionName = pathStr[pathStr.length-1];
