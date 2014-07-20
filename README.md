@@ -6,6 +6,19 @@ It allows you to define resource requirements inside comments with the @import a
 build process declarative dependencies. Additionally, it provides namespace object instantiation in the process of
 pulling together all of your javascript files (to match the directories the compiler has traversed.)
 
+Files are wrapped in individual functions at compile time and their @import-ed files are injected as parameters
+(the parameters are injected aliased to the object's file name, so you can access the objects
+by their simple (non-namespaced) name in the context of the file.)
+
+At the end of the wrapping function, the file name of the object being compiled is returned as a variable
+(the file name is assumed to identify the object variable defined in the file.)
+
+The wrapping function is then called and assigned to the file's namespace where it can be accessed from then on.
+
+The use of closure eliminates the need to specify an object's expected namespace when defining it in a file,
+allowing the file to be used as would a normal JavaScript resource. (No clunky namespace building required.)
+
+
 Given a directory map for a project of
 <br/>TFA
 <br/>&nbsp;|---- model
