@@ -52,9 +52,7 @@ EvaluationPanel = function(){
 </code></pre>
 
 The above code declares an @import annotation, which will instruct the compiler to first process the file found at
-TFA/model/EvaluationModel.js, assigning its defined object "Evaluation" to the namespace TFA.model.Evaluation and then
-continue to process EvaluationPanel.js' code, where TFA.model.Evaluation will be injected into the definition scope
-as simply "Evaluation", rather than "TFA.model.Evaluation". The compiled code would look something like:
+TFA/model/EvaluationModel.js, assigning its defined object "EvaluationModel" to the namespace TFA.model.EvaluationModel and then continue to process EvaluationPanel.js' code, where TFA.model.EvaluationModel will be injected into the definition scope as simply "EvaluationModel", rather than the more verbose "TFA.model.EvaluationModel". The compiled code would look something like:
 
 <pre><code>
 TFA = {};
@@ -81,6 +79,8 @@ __define = function(Evaluation){
 }
 TFA.view.EvaluationPanel = __define(TFA.model.EvaluationModel)
 </code></pre>
+
+Making the process of using components defined in other files not only possible, but also painless (compared to version 0 where the namespaces had to be referenced.)
 
 API
 ===
