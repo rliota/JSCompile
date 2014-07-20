@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Admin on 2/1/14.
- */
 public class CommentParser {
 
     private ArrayList<String> comments = new ArrayList<String>();
