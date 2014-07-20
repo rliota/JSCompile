@@ -52,7 +52,7 @@ EvaluationPanel = function(){
 </code></pre>
 
 The above code declares an @import annotation, which will instruct the compiler to first process the file found at
-TFA/view/Evaluation.js, assigning its defined object "Evaluation" to the namespace TFA.model.Evaluation and then
+TFA/model/EvaluationModel.js, assigning its defined object "Evaluation" to the namespace TFA.model.Evaluation and then
 continue to process EvaluationPanel.js' code, where TFA.model.Evaluation will be injected into the definition scope
 as simply "Evaluation", rather than "TFA.model.Evaluation". The compiled code would look something like:
 
