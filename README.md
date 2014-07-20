@@ -69,12 +69,12 @@ __define = function(){
 
 TFA.model.EvaluationModel = __define();
 
-__define = function(Evaluation){
+__define = function(EvaluationModel){
     EvaluationPanel = function(){
 
             . . .
 
-            this.model = new Evaluation();
+            this.model = new EvaluationModel();
     };
     return EvaluationPanel;
 }
