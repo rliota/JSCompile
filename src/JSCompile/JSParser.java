@@ -1,4 +1,4 @@
-package rliota.util;
+package JSCompile;
 
 
 import java.io.*;
@@ -9,10 +9,17 @@ public class JSParser {
     private static final char NEW_LINE = '\n';
     private static final String REGEX_DOT = "\\.";
     private static final String SEPARATOR = "[\\/]";
+    private static final String INJECTION_HEADER_START = "\n__define = function(";
+    private static final String INJECTION_HEADER_END = "){\n";
+    private static final String INJECTION_FUNCTION_END = "};\n";
+    private static final String INJECTION_FOOTER_START = "__define(";
+    private static final String INJECTION_FOOTER_END = ");\n";
 
     private FileWriter outputFile = null;
     private HashMap<String, File> namespaceResourceMap = new HashMap<String, File>();
     private ArrayList<String> pathsToIgnore = new ArrayList<String>();
+
+    private ArrayList<File> processedFiles = new ArrayList<File>();
 
     public void compile(String srcPath, String destinationPath)throws IOException{
         this.compile(srcPath, destinationPath, null);
@@ -31,10 +38,13 @@ public class JSParser {
             String functionName = pathStr[pathStr.length-1];
             functionName = functionName.split("[.]")[0];
             String header = "//Generated on " + new Date() + "\nfunction initialize_" + functionName + "(){";
-            this.outputFile.write(header + NEW_LINE + "window." + namespace + " = {};");
+            this.outputFile.write(header + NEW_LINE);
+            this.outputFile.write("\nvar __define;");
+            this.outputFile.write("\nvar " + namespace + " = {};");
             this.processDirectory(rootDir, namespace);
             this.assembleJSFiles();
-            this.outputFile.write("}");
+            this.outputFile.write("return " + namespace + ";");
+            this.outputFile.write("\n}");
             this.outputFile.close();
         }else{
             System.out.println("Source path \"" + rootPath + "\" is not a directory.");
@@ -73,7 +83,41 @@ public class JSParser {
         }
     }
 
+    private String getInjectionHeader(ArrayList<String> imports){
+        StringBuilder js = new StringBuilder();
+        js.append(INJECTION_HEADER_START);
+        String delim = "";
+        for(String i : imports){
+            String[] impArr = i.split(REGEX_DOT);
+            if(impArr.length > 0){
+                String imp = impArr[impArr.length-1];
+                js.append(delim).append(imp);
+                delim = ", ";
+            }
+        }
+        js.append(INJECTION_HEADER_END);
+        js.append(NEW_LINE);
+        return js.toString();
+    }
+
+    private String getInjectionFooter(String objectName, String namespace, ArrayList<String> imports){
+        StringBuilder js = new StringBuilder();
+        js.append(NEW_LINE);
+        js.append("return ").append(objectName).append(";\n");
+        js.append(INJECTION_FUNCTION_END);
+        js.append(namespace).append(" = ");
+        js.append(INJECTION_FOOTER_START);
+        String delim = "";
+        for(String i : imports){
+            js.append(delim).append(i);
+            delim = ", ";
+        }
+        js.append(INJECTION_FOOTER_END);
+        return js.toString();
+    }
+
     private void processJSFile(File jsFile) throws IOException{
+        processedFiles.add(jsFile);
         Reader inputStream = new FileReader(jsFile);
         StringBuilder js = new StringBuilder();
         int charIn;
@@ -86,12 +130,20 @@ public class JSParser {
         ArrayList<String> comments = stripper.getImports();
         for(String imp : comments){
             File requisiteJS = namespaceResourceMap.get(imp);
-            if(requisiteJS != null){
+            if(requisiteJS != null && !processedFiles.contains(requisiteJS)){
+
                 processJSFile(requisiteJS);
             }
         }
         if(!shouldIgnore(jsFile)){
+            String namespace = jsFile.getPath().split(REGEX_DOT)[0];
+            namespace = namespace.replaceAll(SEPARATOR, ".");
+            String[] objectNameArr = jsFile.getName().split(REGEX_DOT);
+
+
+            outputFile.write(getInjectionHeader(comments));
             outputFile.write(stripper.getStrippedJS());
+            outputFile.write(getInjectionFooter(objectNameArr[0], namespace, comments));
             pathsToIgnore.add(jsFile.getCanonicalPath());
         }
     }
