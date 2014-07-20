@@ -84,7 +84,7 @@ Making the process of using components defined in other files not only possible,
 
 API
 ===
-<code>java -jar JSCompile.jar <build directory> <output file name> </code>
+<code>java -jar JSCompile.jar &lt;build directory&gt; &lt;output file name&gt; </code>
 
 Caveats
 =======
