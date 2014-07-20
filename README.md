@@ -6,6 +6,7 @@ It allows you to define resource requirements inside comments with the @import a
 build process declarative dependencies. Additionally, it provides namespace object instantiation in the process of
 pulling together all of your javascript files (to match the directories the compiler has traversed.)
 
+It handles dependency resolution for you:
 Files are wrapped in individual functions at compile time and their @import-ed files are injected as parameters
 (the parameters are injected aliased to the object's file name, so you can access the objects
 by their simple (non-namespaced) name in the context of the file.)
@@ -36,27 +37,57 @@ var TFA.model = {};
 var TFA.view = {};
 var TFA.template = {};
 }</code></pre>
+Keeping the object instances organized in the same way they were defined in file form.
 
-Which would enable you to declare objects under namespaces (under the assumption that they would exist at runtime):
+At compile time, any references to @import will be injected as parameters aliased to their simple file name:
 <pre><code>//**
-  * @import TFA.model.Evaluation
+  * @import TFA.model.EvaluationModel
   */
-TFA.view.EvaluationPanel = (function(){
+EvaluationPanel = function(){
         
         . . .
         
-        model: new TFA.model.Evaluation()
-}())
+        this.model = new EvaluationModel();
+}
 </code></pre>
 
-The above code also declares an @import annotation, which will instruct the compiler to append the file found at tfa/view/Evaluation.js to the head of EvaluationPanel.js' code. 
+The above code declares an @import annotation, which will instruct the compiler to first process the file found at
+TFA/view/Evaluation.js, assigning its defined object "Evaluation" to the namespace TFA.model.Evaluation and then
+continue to process EvaluationPanel.js' code, where TFA.model.Evaluation will be injected into the definition scope
+as simply "Evaluation", rather than "TFA.model.Evaluation". The compiled code would look something like:
+
+<pre><code>
+TFA = {};
+TFA.view = {};
+TFA.model = {};
+__define = function(){
+
+    EvaluationModel = function(){
+            . . .
+    };
+    return EvaluationModel;
+}
+
+TFA.model.EvaluationModel = __define();
+
+__define = function(Evaluation){
+    EvaluationPanel = function(){
+
+            . . .
+
+            this.model = new Evaluation();
+    };
+    return EvaluationPanel;
+}
+TFA.view.EvaluationPanel = __define(TFA.model.EvaluationModel)
+</code></pre>
 
 API
 ===
-Argument 0: Source path - the filepath from which to begin traversing and organizing resources.<br/>
-Argument 1: Destination filename - the file in which the compiled resources will be placed.
+<code>java -jar JSCompile.jar <build directory> <output file name> </code>
 
 Caveats
 =======
 Some major limitations of this compiler:
-* @import annotations actually refer to the filepaths of the resource - JSCompile is not "smart" enough to figure out what objects/functions you have declared and where they reside. (tfa/model/Evaluation.js could contain a definition for VNSNY.model.Clinician = ... and it would import the file regardless, without setting up the namespace VNSNY.model.)
+* @import annotations actually refer to the filepaths of the resource - JSCompile will not
+know about the JavaScript object namespaces you create on your own.
