@@ -36,7 +36,8 @@ var TFA = {};
 var TFA.model = {};
 var TFA.view = {};
 var TFA.template = {};
-}</code></pre>
+ . . .
+</code></pre>
 Keeping the object instances organized in the same way they were defined in file form.
 
 At compile time, any references to @import will be injected as parameters aliased to their simple file name:
