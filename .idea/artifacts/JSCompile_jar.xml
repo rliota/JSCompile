@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="JSCompile:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/JSCompile_jar</output-path>
-    <root id="archive" name="JSCompile.jar">
-      <element id="module-output" name="JSCompile" />
-    </root>
-  </artifact>
-</component>
