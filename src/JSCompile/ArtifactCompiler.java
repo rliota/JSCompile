@@ -4,7 +4,6 @@ import JSCompile.domain.JSArtifact;
 import JSCompile.exceptions.CircularDependencyException;
 import JSCompile.formatters.Concatenator;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
