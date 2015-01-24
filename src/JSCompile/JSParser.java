@@ -9,10 +9,10 @@ public class JSParser {
     private static final char NEW_LINE = '\n';
     private static final String REGEX_DOT = "\\.";
     private static final String SEPARATOR = "[\\/]";
-    private static final String INJECTION_HEADER_START = "\n__define = function(";
+    private static final String INJECTION_HEADER_START = "\n(function(";
     private static final String INJECTION_HEADER_END = "){\n";
-    private static final String INJECTION_FUNCTION_END = "};\n";
-    private static final String INJECTION_FOOTER_START = "__define(";
+    private static final String INJECTION_FUNCTION_END = "}(\n";
+    private static final String INJECTION_FOOTER_START = "";
     private static final String INJECTION_FOOTER_END = ");\n";
 
     private FileWriter outputFile = null;
@@ -39,7 +39,7 @@ public class JSParser {
             functionName = functionName.split("[.]")[0];
             String header = "//Generated on " + new Date() + "\nfunction initialize_" + functionName + "(){";
             this.outputFile.write(header + NEW_LINE);
-            this.outputFile.write("\nvar __define;");
+            //this.outputFile.write("\nvar __define;");
             this.outputFile.write("\nvar " + namespace + " = {};");
             this.processDirectory(rootDir, namespace);
             this.assembleJSFiles();
@@ -81,6 +81,36 @@ public class JSParser {
                 }
             }
         }
+    }
+
+    private String getObjectDefinitionHeader(String namespace, ArrayList<String> imports){
+        StringBuilder js = new StringBuilder();
+        js.append(NEW_LINE);
+        js.append(namespace).append(" = (function(");
+        String delim = "";
+        for(String i : imports){
+            String[] impArr = i.split(REGEX_DOT);
+            if(impArr.length > 0){
+                String imp = impArr[impArr.length-1];
+                js.append(delim).append(imp);
+                delim = ", ";
+            }
+        }
+        js.append("){\n");
+        return js.toString();
+    }
+
+    private String getObjectDefinitionFooter(String objectName, ArrayList<String> imports){
+        StringBuilder js = new StringBuilder();
+        js.append("return ").append(objectName).append(";\n");
+        js.append("})(");
+        String delim = "";
+        for(String i : imports){
+            js.append(delim).append(i);
+            delim = ", ";
+        }
+        js.append(");\n");
+        return js.toString();
     }
 
     private String getInjectionHeader(ArrayList<String> imports){
@@ -141,9 +171,9 @@ public class JSParser {
             String[] objectNameArr = jsFile.getName().split(REGEX_DOT);
 
 
-            outputFile.write(getInjectionHeader(comments));
+            outputFile.write(getObjectDefinitionHeader(namespace, comments));
             outputFile.write(stripper.getStrippedJS());
-            outputFile.write(getInjectionFooter(objectNameArr[0], namespace, comments));
+            outputFile.write(getObjectDefinitionFooter(objectNameArr[0], comments));
             pathsToIgnore.add(jsFile.getCanonicalPath());
         }
     }
