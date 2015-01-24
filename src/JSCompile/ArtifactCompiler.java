@@ -25,7 +25,8 @@ public class ArtifactCompiler {
              * processed it should never be able to reach this check.)
              */
             if(artifactsAwaitingProcessing.containsKey(artifact.getFullName())){
-                throw new CircularDependencyException();
+                throw new CircularDependencyException(
+                        "Please check "+artifact.getFullName()+"'s dependency chain for issues and try compiling again.\n");
             }
 
             /**
