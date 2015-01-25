@@ -1,6 +1,6 @@
 JSCompile
 =========
-The smartest tool for packaging a JS project.
+The multi-file JavaScript project packager/compiler.
 
 Sick of writing RequireJS boiler plate just to get your project compiled? JSCompile has you covered.
 Given a directory map for a project that looks like:
