@@ -58,7 +58,11 @@ derived from the path structure of your project. It injects your object-files fo
 
             return EvaluationPanel;
 
-        }(TFA.models.EvaluationModel, TFA.models.PersonModel, TFA.templates.EvaluationTemplates);
+        }(
+            TFA.models.EvaluationModel,
+            TFA.models.PersonModel,
+            TFA.templates.EvaluationTemplates
+        ));
 
         . . .
 
