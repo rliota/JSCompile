@@ -5,12 +5,12 @@ The smartest tool for packaging a JS project.
 Sick of writing RequireJS boiler plate just to get your project compiled? JSCompile has you covered.
 Given a directory map for a project that looks like:
 <br/>TFA
-<br/>&nbsp;|---- model
+<br/>&nbsp;|---- models
 <br/>&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---- EvaluationModel.js
 <br/>&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---- PersonModel.js
-<br/>&nbsp;|---- view
+<br/>&nbsp;|---- views
 <br/>&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---- EvaluationPanel.js
-<br/>&nbsp;|---- template
+<br/>&nbsp;|---- templates
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---- EvaluationTemplates.js
 
 and a file (EvaluationPanel.js for instance) that looks like:
@@ -18,10 +18,12 @@ and a file (EvaluationPanel.js for instance) that looks like:
     /**
         @import TFA.models.EvaluationModel;
         @import TFA.models.PersonModel;
+        @import TFA.templates.EvaluationTemplates;
      */
     function EvaluationPanel(personData){
         this.evaluationData = new EvaluationModel();
         this.personData = personData || new PersonModel();
+        this.template = EvaluationTemplates.panel;
     }
 
 
