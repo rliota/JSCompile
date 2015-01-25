@@ -1,8 +1,8 @@
-package JSCompile;
+package JSCompile.util;
 
 import JSCompile.domain.JSArtifact;
 import JSCompile.exceptions.CircularDependencyException;
-import JSCompile.formatters.Concatenator;
+import JSCompile.exceptions.UnknownImportException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +17,6 @@ public class ArtifactCompiler {
 
     public void processArtifact(JSArtifact artifact){
 
-
         if( ! processedArtifacts.containsKey(artifact.getFullName())){
 
             /**
@@ -26,7 +25,7 @@ public class ArtifactCompiler {
              */
             if(artifactsAwaitingProcessing.containsKey(artifact.getFullName())){
                 throw new CircularDependencyException(
-                        "Please check "+artifact.getFullName()+"'s dependency chain for issues and try compiling again.\n");
+                        "Please check "+artifact.getFullName()+"'s dependency chain for issues and try compiling again.");
             }
 
             /**
@@ -41,7 +40,11 @@ public class ArtifactCompiler {
 
                 // if the artifact hasn't yet been processed
                 if( ! processedArtifacts.containsKey(dependency) ){
-                    processArtifact(artifactsToProcess.get(dependency));
+                    JSArtifact nextArtifact = artifactsToProcess.get(dependency);
+                    if(nextArtifact == null){
+                        throw new UnknownImportException("Couldn't find the file representing the imported object \""+dependency+"\" in the project path. Dependent file: "+artifact.getFullName());
+                    }
+                    processArtifact(nextArtifact);
                 }
             }
 
@@ -52,7 +55,7 @@ public class ArtifactCompiler {
 
     }
 
-    public String compile(HashMap<String, JSArtifact> artifacts, ArrayList<String> namespaces, String packageName, String outputFileLocation){
+    public String compile(HashMap<String, JSArtifact> artifacts, ArrayList<String> namespaces, String packageName){
         this.concatenator = new Concatenator(packageName, namespaces);
         this.artifactsToProcess = artifacts;
         Collection<JSArtifact> artifactList = artifacts.values();

@@ -1,4 +1,4 @@
-package JSCompile.formatters;
+package JSCompile.util;
 
 import JSCompile.domain.JSArtifact;
 
@@ -8,11 +8,23 @@ public class Concatenator {
 
     private StringBuilder source = null;
     private boolean exported = false;
+    private boolean pretty = true;
+    private String rootNameSpace = "";
+
+    public Concatenator(String packageName, ArrayList<String>namespaces, boolean prettyPrint){
+        this.pretty = prettyPrint;
+        init(packageName, namespaces);
+    }
 
     public Concatenator(String packageName, ArrayList<String>namespaces){
+        init(packageName, namespaces);
+    }
+
+    private void init(String packageName, ArrayList<String>namespaces){
         this.source = new StringBuilder();
         writeHeader(packageName);
         writeNamespaces(namespaces);
+        this.rootNameSpace = namespaces.get(0);
     }
 
 
@@ -52,10 +64,12 @@ public class Concatenator {
     }
 
     private void writeNamespaces(ArrayList<String> namespaceList){
+        writeIndent();
+        source.append("var ");
         for(String namespace : namespaceList){
-            writeIndent();
             source.append(namespace);
             source.append(" = {};\n");
+            writeIndent();
         }
         source.append("\n");
     }
@@ -72,26 +86,47 @@ public class Concatenator {
                 source.append(", ");
             }
             String dependencyNamespace = dependencies.get(i);
-            String[] dependencyPackageParts = dependencyNamespace.split(".");
+            String[] dependencyPackageParts = dependencyNamespace.split("\\.");
             source.append(dependencyPackageParts[dependencyPackageParts.length-1]); // There is no good reason a null pointer exception should occur here.
         }
         source.append("){\n");
-        source.append(memberSource);
+        if(pretty){
+            source.append(memberSource.replaceAll("\n", "\n        "));
+        }else{
+            source.append(memberSource);
+        }
+        source.append('\n');
+        writeIndent(2);
+        source.append("return ");
+        source.append(memberName);
+        source.append(";\n");
         writeIndent();
-        source.append("\n}(\n");
+        source.append("}(");
 
-        for(String dependencyNamespace : dependencies){
-            writeIndent(2);
-            source.append(dependencyNamespace);
+        if(dependenciesLength > 0){
             source.append("\n");
         }
 
-        writeIndent();
+        for(int i=0; i<dependenciesLength; i++){
+            if(i>0){
+                source.append(",\n");
+            }
+            String dependencyNamespace = dependencies.get(i);
+            writeIndent(2);
+            source.append(dependencyNamespace);
+        }
+
+        if(dependenciesLength > 0){
+            source.append('\n');
+            writeIndent();
+        }
         source.append("));\n\n");
     }
 
     private void writeFooter(){
-        source.append("}");
+        source.append("    return ");
+        source.append(rootNameSpace);
+        source.append(";\n}");
     }
 
 }

@@ -6,7 +6,6 @@ public class JSArtifact {
 
     public ArrayList<String> dependencies = new ArrayList<String>();
 
-    private String fullName = null;
     private String name = null;
     private String namespace = null;
 
@@ -33,7 +32,7 @@ public class JSArtifact {
     }
 
     public void setName(String name) {
-        this.namespace = namespace;
+        this.name = name;
     }
 
     public String getName(){

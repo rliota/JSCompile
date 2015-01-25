@@ -1,4 +1,6 @@
-package JSCompile;
+package JSCompile.util;
+
+import JSCompile.JSCompile;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -34,7 +36,7 @@ public class CommentParser {
     }
 
     public String getStrippedJS(){
-        return jsString.toString();
+        return jsString.toString()+'\n';
     }
 
     private void resetState(){
