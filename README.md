@@ -48,6 +48,9 @@ project and then inject them for you to use shorthand:
                 this.evaluationData = new EvaluationModel();
                 this.personData = personData || new PersonModel();
             }
+
+            return EvaluationPanel;
+
         }(TFA.model.EvaluationModel, TFA.model.PersonModel);
 
         . . .
