@@ -27,33 +27,38 @@ and a file (EvaluationPanel.js for instance) that looks like:
     }
 
 
-Running JSCompile will output an initialization function, defining namespace objects derived from the path structure of your
-project and then inject them for you to use shorthand:
+Running JSCompile will output an initialization function in a js file of your choice, defining namespace objects
+derived from the path structure of your project. It injects your object-files for you to use shorthand:
 
-    function initialize_MyCompiledJSResources(){
+    function initialize_TFAResources(){
         var TFA = {};
-        TFA.model = {};
-        TFA.view = {};
-        TFA.template = {};
+        TFA.models = {};
+        TFA.views = {};
+        TFA.templates = {};
 
-        TFA.model.PersonModel = (function(){
+        TFA.models.PersonModel = (function(){
             . . .
         }());
 
-        TFA.model.EvaluationModel = (function(){
+        TFA.models.EvaluationModel = (function(){
             . . .
         }());
 
-        TFA.view.EvaluationPanel = (function(EvaluationModel, PersonModel){
+        TFA.templates.EvaluationTemplates = (function(){
+            . . .
+        }());
+
+        TFA.views.EvaluationPanel = (function(EvaluationModel, PersonModel, EvaluationTemplates){
 
             function EvaluationPanel(personData){
                 this.evaluationData = new EvaluationModel();
                 this.personData = personData || new PersonModel();
+                this.template = EvaluationTemplates.panel;
             }
 
             return EvaluationPanel;
 
-        }(TFA.model.EvaluationModel, TFA.model.PersonModel);
+        }(TFA.models.EvaluationModel, TFA.models.PersonModel, TFA.templates.EvaluationTemplates);
 
         . . .
 
