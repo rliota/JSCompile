@@ -1,7 +1,7 @@
-package jscompile.util;
+package jscompileRENAME.util;
 
 
-import jscompile.domain.JSArtifact;
+import jscompileRENAME.domain.JSArtifact;
 
 import java.io.File;
 import java.io.FileReader;

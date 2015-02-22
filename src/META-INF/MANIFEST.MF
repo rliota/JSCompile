@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: jscompile.JSCompile
+Main-Class: jscompileRENAME.JSCompile

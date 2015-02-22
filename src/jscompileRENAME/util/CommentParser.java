@@ -1,4 +1,4 @@
-package jscompile.util;
+package jscompileRENAME.util;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package jscompile.exceptions;
+package jscompileRENAME.exceptions;
 
 public class CircularDependencyException extends RuntimeException{
 
