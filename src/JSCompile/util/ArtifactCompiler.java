@@ -1,8 +1,8 @@
-package JSCompile.util;
+package jscompile.util;
 
-import JSCompile.domain.JSArtifact;
-import JSCompile.exceptions.CircularDependencyException;
-import JSCompile.exceptions.UnknownImportException;
+import jscompile.domain.JSArtifact;
+import jscompile.exceptions.CircularDependencyException;
+import jscompile.exceptions.UnknownImportException;
 
 import java.util.ArrayList;
 import java.util.Collection;

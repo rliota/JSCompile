@@ -1,7 +1,7 @@
-package JSCompile;
+package jscompile;
 
 
-import JSCompile.util.ProjectProcessor;
+import jscompile.util.ProjectProcessor;
 
 import java.io.File;
 import java.io.FileWriter;

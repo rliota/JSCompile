@@ -1,6 +1,4 @@
-package JSCompile.util;
-
-import JSCompile.JSCompile;
+package jscompile.util;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

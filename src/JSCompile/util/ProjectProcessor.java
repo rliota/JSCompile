@@ -1,7 +1,7 @@
-package JSCompile.util;
+package jscompile.util;
 
 
-import JSCompile.domain.JSArtifact;
+import jscompile.domain.JSArtifact;
 
 import java.io.File;
 import java.io.FileReader;

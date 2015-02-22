@@ -1,4 +1,4 @@
-package JSCompile.domain;
+package jscompile.domain;
 
 import java.util.ArrayList;
 
