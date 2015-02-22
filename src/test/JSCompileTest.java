@@ -1,8 +1,8 @@
 package test;
 
-import jscompileRENAME.JSCompile;
-import jscompileRENAME.exceptions.CircularDependencyException;
-import jscompileRENAME.exceptions.UnknownImportException;
+import jscompile.JSCompile;
+import jscompile.exceptions.CircularDependencyException;
+import jscompile.exceptions.UnknownImportException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,8 +1,8 @@
-package jscompileRENAME.util;
+package jscompile.util;
 
-import jscompileRENAME.domain.JSArtifact;
-import jscompileRENAME.exceptions.CircularDependencyException;
-import jscompileRENAME.exceptions.UnknownImportException;
+import jscompile.domain.JSArtifact;
+import jscompile.exceptions.CircularDependencyException;
+import jscompile.exceptions.UnknownImportException;
 
 import java.util.ArrayList;
 import java.util.Collection;

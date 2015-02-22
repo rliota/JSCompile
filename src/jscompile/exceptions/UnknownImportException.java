@@ -1,4 +1,4 @@
-package jscompileRENAME.exceptions;
+package jscompile.exceptions;
 
 
 public class UnknownImportException extends RuntimeException {

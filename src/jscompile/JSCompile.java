@@ -1,7 +1,7 @@
-package jscompileRENAME;
+package jscompile;
 
 
-import jscompileRENAME.util.ProjectProcessor;
+import jscompile.util.ProjectProcessor;
 
 import java.io.File;
 import java.io.FileWriter;
