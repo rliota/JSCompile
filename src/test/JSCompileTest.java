@@ -12,7 +12,8 @@ import java.io.IOException;
 
 public class JSCompileTest {
 
-    public String ROOT_DIR = "";
+    public String COMPILE_SRC = "";
+    public String COMPILE_TARGET = "./test-resources/mockCompileTargetDirectory/mockproject.js";
 
     @Before
     public void setUp() throws Exception {
@@ -21,15 +22,18 @@ public class JSCompileTest {
 
     @After
     public void tearDown() throws Exception {
-
+        File target = new File(COMPILE_TARGET);
+        if(target.exists()){
+            target.delete();
+        }
     }
 
 
     @Test
     public void testProjectCompilationFromNonLocalDirectory() throws CircularDependencyException, UnknownImportException, IOException {
-        String[] args = {"./test-resources/mockproject", "./test-resources/mockCompileTargetDirectory/mockproject.js"};
+        String[] args = {"./test-resources/mockproject", COMPILE_TARGET};
         JSCompile.main(args);
-        File expectedFile = new File("./test-resources/mockCompileTargetDirectory/mockproject.js");
+        File expectedFile = new File(COMPILE_TARGET);
         assert(expectedFile.exists());
     }
 }
