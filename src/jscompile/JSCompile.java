@@ -17,17 +17,10 @@ public class JSCompile {
         if(args.length>2){
             projectName = args[2];
         }else{
-
-            String[] outputPathParts = outputPath.split("\\.js");
-            if(outputPathParts.length>0){
-                outputPathParts = outputPathParts[0].split("[\\/]");
-                if(outputPathParts.length > 0){
-                    projectName = outputPathParts[outputPathParts.length-1];
-                }
+            String[] projectPathParts = projectPath.split("[\\/]");
+            if(projectPathParts.length>0){
+                projectName = projectPathParts[projectPathParts.length-1];
             }
-        }
-        if(projectName == null){
-            projectName = "UntitledJSProject";
         }
 
         File rootDir = new File(projectPath);
