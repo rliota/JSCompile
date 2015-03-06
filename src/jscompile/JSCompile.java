@@ -6,8 +6,13 @@ import jscompile.util.ProjectProcessor;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Logger;
+
 
 public class JSCompile {
+
+
+    private static final Logger log = Logger.getLogger("CompilerLog");
 
     public static void main(String[] args) throws IOException{
         String projectPath = args[0];

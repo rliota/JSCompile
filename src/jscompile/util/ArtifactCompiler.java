@@ -7,8 +7,11 @@ import jscompile.exceptions.UnknownImportException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public class ArtifactCompiler {
+
+    private static final Logger log = Logger.getLogger("CompilerLog");
 
     private HashMap<String, JSArtifact> artifactsAwaitingProcessing = new HashMap<String, JSArtifact>();
     private HashMap<String, JSArtifact> processedArtifacts = new HashMap<String, JSArtifact>();
@@ -42,9 +45,10 @@ public class ArtifactCompiler {
                 if( ! processedArtifacts.containsKey(dependency) ){
                     JSArtifact nextArtifact = artifactsToProcess.get(dependency);
                     if(nextArtifact == null){
-                        throw new UnknownImportException("Couldn't find the file representing the imported object \""+dependency+"\" in the project path. Dependent file: "+artifact.getFullName());
+                        log.warning("Couldn't find the file representing the imported object \""+dependency+"\" in the project path. Dependent file: "+artifact.getFullName());
+                    }else{
+                        processArtifact(nextArtifact);
                     }
-                    processArtifact(nextArtifact);
                 }
             }
 
