@@ -17,7 +17,7 @@ public class JSCompile {
         if(args.length>2){
             projectName = args[2];
         }else{
-            String[] projectPathParts = projectPath.split("[\\/]");
+            String[] projectPathParts = projectPath.split(File.separator);
             if(projectPathParts.length>0){
                 projectName = projectPathParts[projectPathParts.length-1];
             }
