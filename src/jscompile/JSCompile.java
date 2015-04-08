@@ -13,22 +13,15 @@ public class JSCompile {
         String projectPath = args[0];
         String outputPath = args[1];
 
-        String projectName = null;
-        if(args.length>2){
-            projectName = args[2];
-        }else{
-            String separator = File.separator;
-            if(separator.equals("\\")){
-                separator = "\\\\";
-            }
-            String[] projectPathParts = projectPath.split(separator);
-            if(projectPathParts.length>0){
-                projectName = projectPathParts[projectPathParts.length-1];
-            }
-        }
 
         File rootDir = new File(projectPath);
         if(rootDir.isDirectory()){
+            String projectName = null;
+            if(args.length>2){
+                projectName = args[2];
+            }else{
+                projectName = rootDir.getName();
+            }
             ProjectProcessor processor = new ProjectProcessor(rootDir);
             String compiledJS = processor.getCompiledProject(projectName);
 
